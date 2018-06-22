@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html> 
+  <head> 
+   <meta charset="utf-8">
+     <meta name="description" content="Proyecto transpiración Arduino">
+     <meta name="author" content="root" >
+    <title>Mi primer proyecto de Arduino</title>
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+  </head>
+
+  <body>
+   
+    <div class="container header-bar">
+      
+      <h3>Proyecto de Arduino sobre la transpiración en plantas </h3>
+        /*Proyecto final.*/
+/*Programa que mide luminosidad, temperatura, humedad relativa atmosférica, 
+ * humedad en el suelo. Los datos obtenidos se guardan y se representan gráficamente
+ a tiempo real, con el fin de poner de manifiesto el fenómeno de transpiración en plantas.*/
+
+//Incluimos las librerias necesarias. 
+
+#include <DHT.h>
+#include <Wire.h>
+
+//Declaramos las varibles.
+
+DHT dht; 
+
+int luminosidad = A3; //conectamos la fotorresistencia a un pin analogico. 
+
+int humedad; 
+
+int temperatura;
+
+int suelo = A0; // Higrómetro, medida de la humedad del suelo. 
+
+int contador; 
+
+void setup() 
+{
+   
+  dht.setup(4); //Sensor de temperatura-humedad(Pin digital 4).
+  Serial.begin(9600); //Comunicación Arduino-Pc.
+}
+
+void loop() 
+{
+    //Damos un tiempo mínimo para que los sensores tomen las medidas.
+    delay(dht.getMinimumSamplingPeriod()); 
+     
+     //Leemos los datos tomados por el sensor. 
+
+     luminosidad = analogRead(A3);
+     humedad = dht.getHumidity();
+     temperatura = dht.getTemperature();
+     suelo = analogRead(A0); 
+  
+    //Mostramos los datos por pantalla.
+
+    Serial.print(contador); Serial.print("\t");
+    Serial.print(luminosidad); Serial.print("\t");
+    Serial.print(humedad); Serial.print("\t");
+    Serial.print(temperatura); Serial.print("\t");
+    Serial.print(suelo); Serial.println();
+ 
+    //El contador aumenta 1 en cada bucle.
+    contador++;
+}
+
+     
+  </div>       
+       
+ </body>
+</html>
