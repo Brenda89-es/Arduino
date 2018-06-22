@@ -1,0 +1,57 @@
+<pre>
+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#95a5a6">&#47;*Proyecto final.*&#47;</font>
+<font color="#95a5a6">&#47;*Programa que mide luminosidad, temperatura, humedad relativa atmosférica, </font>
+<font color="#95a5a6"> * humedad en el suelo. Los datos obtenidos se guardan y se representan gráficamente</font>
+<font color="#95a5a6"> a tiempo real, con el fin de poner de manifiesto el fenómeno de transpiración en plantas.*&#47;</font>
+
+<font color="#434f54">&#47;&#47;Incluimos las librerias necesarias. </font>
+
+<font color="#5e6d03">#include</font> <font color="#434f54">&lt;</font><b><font color="#d35400">DHT</font></b><font color="#434f54">.</font><font color="#000000">h</font><font color="#434f54">&gt;</font>
+<font color="#5e6d03">#include</font> <font color="#434f54">&lt;</font><font color="#d35400">Wire</font><font color="#434f54">.</font><font color="#000000">h</font><font color="#434f54">&gt;</font>
+
+<font color="#434f54">&#47;&#47;Declaramos las varibles.</font>
+
+<b><font color="#d35400">DHT</font></b> <font color="#000000">dht</font><font color="#000000">;</font> 
+
+<font color="#00979c">int</font> <font color="#000000">luminosidad</font> <font color="#434f54">=</font> <font color="#000000">A3</font><font color="#000000">;</font> <font color="#434f54">&#47;&#47;conectamos la fotorresistencia a un pin analogico. </font>
+
+<font color="#00979c">int</font> <font color="#000000">humedad</font><font color="#000000">;</font> 
+
+<font color="#00979c">int</font> <font color="#000000">temperatura</font><font color="#000000">;</font>
+
+<font color="#00979c">int</font> <font color="#000000">suelo</font> <font color="#434f54">=</font> <font color="#000000">A0</font><font color="#000000">;</font> <font color="#434f54">&#47;&#47; Higrómetro, medida de la humedad del suelo. </font>
+
+<font color="#00979c">int</font> <font color="#000000">contador</font><font color="#000000">;</font> 
+
+<font color="#00979c">void</font> <font color="#5e6d03">setup</font><font color="#000000">(</font><font color="#000000">)</font> 
+<font color="#000000">{</font>
+ &nbsp;&nbsp;
+ &nbsp;<font color="#000000">dht</font><font color="#434f54">.</font><font color="#5e6d03">setup</font><font color="#000000">(</font><font color="#000000">4</font><font color="#000000">)</font><font color="#000000">;</font> <font color="#434f54">&#47;&#47;Sensor de temperatura-humedad(Pin digital 4).</font>
+ &nbsp;<b><font color="#d35400">Serial</font></b><font color="#434f54">.</font><font color="#d35400">begin</font><font color="#000000">(</font><font color="#000000">9600</font><font color="#000000">)</font><font color="#000000">;</font> <font color="#434f54">&#47;&#47;Comunicación Arduino-Pc.</font>
+<font color="#000000">}</font>
+
+<font color="#00979c">void</font> <font color="#5e6d03">loop</font><font color="#000000">(</font><font color="#000000">)</font> 
+<font color="#000000">{</font>
+ &nbsp;&nbsp;&nbsp;<font color="#434f54">&#47;&#47;Damos un tiempo mínimo para que los sensores tomen las medidas.</font>
+ &nbsp;&nbsp;&nbsp;<font color="#d35400">delay</font><font color="#000000">(</font><font color="#000000">dht</font><font color="#434f54">.</font><font color="#d35400">getMinimumSamplingPeriod</font><font color="#000000">(</font><font color="#000000">)</font><font color="#000000">)</font><font color="#000000">;</font> 
+ &nbsp;&nbsp;&nbsp;&nbsp;
+ &nbsp;&nbsp;&nbsp;&nbsp;<font color="#434f54">&#47;&#47;Leemos los datos tomados por el sensor. </font>
+
+ &nbsp;&nbsp;&nbsp;&nbsp;<font color="#000000">luminosidad</font> <font color="#434f54">=</font> <font color="#d35400">analogRead</font><font color="#000000">(</font><font color="#000000">A3</font><font color="#000000">)</font><font color="#000000">;</font>
+ &nbsp;&nbsp;&nbsp;&nbsp;<font color="#000000">humedad</font> <font color="#434f54">=</font> <font color="#000000">dht</font><font color="#434f54">.</font><font color="#d35400">getHumidity</font><font color="#000000">(</font><font color="#000000">)</font><font color="#000000">;</font>
+ &nbsp;&nbsp;&nbsp;&nbsp;<font color="#000000">temperatura</font> <font color="#434f54">=</font> <font color="#000000">dht</font><font color="#434f54">.</font><font color="#d35400">getTemperature</font><font color="#000000">(</font><font color="#000000">)</font><font color="#000000">;</font>
+ &nbsp;&nbsp;&nbsp;&nbsp;<font color="#000000">suelo</font> <font color="#434f54">=</font> <font color="#d35400">analogRead</font><font color="#000000">(</font><font color="#000000">A0</font><font color="#000000">)</font><font color="#000000">;</font> 
+ &nbsp;
+ &nbsp;&nbsp;&nbsp;<font color="#434f54">&#47;&#47;Mostramos los datos por pantalla.</font>
+
+ &nbsp;&nbsp;&nbsp;<b><font color="#d35400">Serial</font></b><font color="#434f54">.</font><font color="#d35400">print</font><font color="#000000">(</font><font color="#000000">contador</font><font color="#000000">)</font><font color="#000000">;</font> <b><font color="#d35400">Serial</font></b><font color="#434f54">.</font><font color="#d35400">print</font><font color="#000000">(</font><font color="#005c5f">&#34;\t&#34;</font><font color="#000000">)</font><font color="#000000">;</font>
+ &nbsp;&nbsp;&nbsp;<b><font color="#d35400">Serial</font></b><font color="#434f54">.</font><font color="#d35400">print</font><font color="#000000">(</font><font color="#000000">luminosidad</font><font color="#000000">)</font><font color="#000000">;</font> <b><font color="#d35400">Serial</font></b><font color="#434f54">.</font><font color="#d35400">print</font><font color="#000000">(</font><font color="#005c5f">&#34;\t&#34;</font><font color="#000000">)</font><font color="#000000">;</font>
+ &nbsp;&nbsp;&nbsp;<b><font color="#d35400">Serial</font></b><font color="#434f54">.</font><font color="#d35400">print</font><font color="#000000">(</font><font color="#000000">humedad</font><font color="#000000">)</font><font color="#000000">;</font> <b><font color="#d35400">Serial</font></b><font color="#434f54">.</font><font color="#d35400">print</font><font color="#000000">(</font><font color="#005c5f">&#34;\t&#34;</font><font color="#000000">)</font><font color="#000000">;</font>
+ &nbsp;&nbsp;&nbsp;<b><font color="#d35400">Serial</font></b><font color="#434f54">.</font><font color="#d35400">print</font><font color="#000000">(</font><font color="#000000">temperatura</font><font color="#000000">)</font><font color="#000000">;</font> <b><font color="#d35400">Serial</font></b><font color="#434f54">.</font><font color="#d35400">print</font><font color="#000000">(</font><font color="#005c5f">&#34;\t&#34;</font><font color="#000000">)</font><font color="#000000">;</font>
+ &nbsp;&nbsp;&nbsp;<b><font color="#d35400">Serial</font></b><font color="#434f54">.</font><font color="#d35400">print</font><font color="#000000">(</font><font color="#000000">suelo</font><font color="#000000">)</font><font color="#000000">;</font> <b><font color="#d35400">Serial</font></b><font color="#434f54">.</font><font color="#d35400">println</font><font color="#000000">(</font><font color="#000000">)</font><font color="#000000">;</font>
+ 
+ &nbsp;&nbsp;&nbsp;<font color="#434f54">&#47;&#47;El contador aumenta 1 en cada bucle.</font>
+ &nbsp;&nbsp;&nbsp;<font color="#000000">contador</font><font color="#434f54">++</font><font color="#000000">;</font>
+<font color="#000000">}</font>
+
+</pre>
